@@ -38,13 +38,6 @@ public class Terrain {
 
 	public void draw(Graphics2D g2, double scale) {
 
-		// g2.setColor(Color.WHITE);
-		// g2.fill(new Rectangle2D.Double(10, 10, this.getWidthInM() * scale,
-		// this.getHeightInM() * scale));
-		// g2.setColor(Color.BLACK);
-		// g2.draw(new Rectangle2D.Double(10, 10, this.getWidthInM() * scale,
-		// this.getHeightInM() * scale));
-
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
 		g2.setColor(Color.black);
@@ -53,12 +46,12 @@ public class Terrain {
 	}
 
 	public double getWidthInM() {
-		double width = columnCount * deltaXInMM / 1000.0;
-		return width;
+		return (columnCount * deltaXInMM / 1000.0);
+
 	}
 
 	public double getHeightInM() {
-		double height = rowCount * deltaYInMM / 1000.0;
-		return height;
+		return (rowCount * deltaYInMM / 1000.0);
+
 	}
 }

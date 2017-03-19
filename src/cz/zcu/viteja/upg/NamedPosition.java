@@ -2,8 +2,6 @@ package cz.zcu.viteja.upg;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 
 public class NamedPosition {
 
@@ -44,9 +42,6 @@ public class NamedPosition {
 
 	public void draw(Graphics2D g2, double scale) {
 
-		AffineTransform transform = g2.getTransform();
-		g2.translate(10, 10);
-
 		switch (this.positionType) {
 		case Constants.SHOOTER:
 		case Constants.TARGET:
@@ -58,8 +53,6 @@ public class NamedPosition {
 
 		}
 
-		g2.transform(transform);
-
 	}
 
 	private void drawHitspot(Graphics2D g2, double scale) {
@@ -68,18 +61,25 @@ public class NamedPosition {
 	}
 
 	private void drawTargetShooter(Graphics2D g2, double scale) {
-		double positionX = this.x * scale;
-		double positionY = this.y * scale;
-		double offset = this.size / 2;
 
-		if (this.positionType.equals(Constants.SHOOTER)) {
-			System.out.println("X/Y: " + x + "/" + y);
-		}
+		/*
+		 * double positionX = this.x * scale; double positionY = this.y * scale;
+		 * double offset = this.size / 2;
+		 * 
+		 * g2.setColor(this.color); g2.draw(new Line2D.Double(positionX -
+		 * offset, positionY, positionX + offset, positionY)); g2.draw(new
+		 * Line2D.Double(positionX, positionY - offset, positionX, positionY +
+		 * offset));
+		 */
 
-		g2.setColor(this.color);
-		g2.draw(new Line2D.Double(positionX - offset, positionY, positionX + offset, positionY));
-		g2.draw(new Line2D.Double(positionX, positionY - offset, positionX, positionY + offset));
+		g2.setColor(color);
+		int xs = (int) (x * scale);
+		int ys = (int) (y * scale);
 
+		g2.drawLine(xs, ys, xs + 5, ys);
+		g2.drawLine(xs, ys, xs, ys + 5);
+		g2.drawLine(xs, ys, xs - 5, ys);
+		g2.drawLine(xs, ys, xs, ys - 5);
 	}
 
 }

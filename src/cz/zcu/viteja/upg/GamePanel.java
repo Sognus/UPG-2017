@@ -57,8 +57,10 @@ public class GamePanel extends JPanel {
 	}
 
 	public double getScale() {
-		double cosiX = this.getWidth() / this.terrain.getWidthInM();
-		double cosiY = this.getHeight() / this.terrain.getHeightInM();
+		double cosiX = (this.getWidth()) / this.terrain.getWidthInM();
+		double cosiY = (this.getHeight()) / this.terrain.getHeightInM();
+
+		System.out.println(cosiX + " VS " + cosiY);
 
 		return Math.min(cosiX, cosiY);
 	}

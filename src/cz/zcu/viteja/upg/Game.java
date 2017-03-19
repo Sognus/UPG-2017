@@ -46,10 +46,12 @@ public class Game {
 		terrainFile.printData();
 
 		// Získání dat o støelci a cíli z naèteného souboru
-		shooter = new NamedPosition(terrainFile.shooterX / Constants.mmToM, terrainFile.shooterY / Constants.mmToM,
-				Constants.SHOOTER, Constants.shooterColor, 10.0);
-		target = new NamedPosition(terrainFile.targetX / Constants.mmToM, terrainFile.targetY / Constants.mmToM,
-				Constants.TARGET, Constants.targetColor, 10.0);
+		shooter = new NamedPosition(terrainFile.shooterX * terrainFile.deltaX / Constants.mmToM,
+				terrainFile.shooterY * terrainFile.deltaY / Constants.mmToM, Constants.SHOOTER, Constants.shooterColor,
+				10.0);
+		target = new NamedPosition(terrainFile.targetX * terrainFile.deltaX / Constants.mmToM,
+				terrainFile.targetY * terrainFile.deltaY / Constants.mmToM, Constants.TARGET, Constants.targetColor,
+				10.0);
 
 		double shooterTargetDistance = shooter.getDistance(target);
 
