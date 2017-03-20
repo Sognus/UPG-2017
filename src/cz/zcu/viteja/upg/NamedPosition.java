@@ -2,6 +2,8 @@ package cz.zcu.viteja.upg;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 
 public class NamedPosition {
 
@@ -56,30 +58,32 @@ public class NamedPosition {
 	}
 
 	private void drawHitspot(Graphics2D g2, double scale) {
-		// TODO Auto-generated method stub
 
+		// Pozice pro vykreslení -> size je prùmìr!!!;
+		double positionDrawX = (this.x - (this.size / 2)) * scale;
+		double positionDrawY = (this.y - (this.size / 2)) * scale;
+
+		g2.setColor(this.color);
+		g2.fill(new Ellipse2D.Double(positionDrawX, positionDrawY, this.size * scale, this.size * scale));
 	}
 
 	private void drawTargetShooter(Graphics2D g2, double scale) {
 
+		double positionX = this.x * scale;
+		double positionY = this.y * scale;
+		double offset = this.size / 2;
+
+		g2.setColor(this.color);
+		g2.draw(new Line2D.Double(positionX - offset, positionY, positionX + offset, positionY));
+		g2.draw(new Line2D.Double(positionX, positionY - offset, positionX, positionY + offset));
+
 		/*
-		 * double positionX = this.x * scale; double positionY = this.y * scale;
-		 * double offset = this.size / 2;
+		 * g2.setColor(color); int xs = (int) (x * scale); int ys = (int) (y *
+		 * scale);
 		 * 
-		 * g2.setColor(this.color); g2.draw(new Line2D.Double(positionX -
-		 * offset, positionY, positionX + offset, positionY)); g2.draw(new
-		 * Line2D.Double(positionX, positionY - offset, positionX, positionY +
-		 * offset));
+		 * g2.drawLine(xs, ys, xs + 5, ys); g2.drawLine(xs, ys, xs, ys + 5);
+		 * g2.drawLine(xs, ys, xs - 5, ys); g2.drawLine(xs, ys, xs, ys - 5);
 		 */
-
-		g2.setColor(color);
-		int xs = (int) (x * scale);
-		int ys = (int) (y * scale);
-
-		g2.drawLine(xs, ys, xs + 5, ys);
-		g2.drawLine(xs, ys, xs, ys + 5);
-		g2.drawLine(xs, ys, xs - 5, ys);
-		g2.drawLine(xs, ys, xs, ys - 5);
 	}
 
 }

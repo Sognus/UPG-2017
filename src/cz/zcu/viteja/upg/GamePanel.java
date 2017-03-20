@@ -13,6 +13,9 @@ import javax.swing.JPanel;
  */
 public class GamePanel extends JPanel {
 
+	/** Serial version UID */
+	private static final long serialVersionUID = 1L;
+
 	public Terrain terrain;
 	public NamedPosition shooter;
 	public NamedPosition target;
@@ -28,6 +31,7 @@ public class GamePanel extends JPanel {
 		super.paint(g);
 
 		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(10, 10);
 		double scale = this.getScale();
 
 		if (terrain != null) {
@@ -38,7 +42,7 @@ public class GamePanel extends JPanel {
 
 		if (hitSpot != null) {
 
-			// hitSpot.draw(g2, scale);
+			hitSpot.draw(g2, scale);
 
 		}
 
@@ -57,12 +61,17 @@ public class GamePanel extends JPanel {
 	}
 
 	public double getScale() {
-		double cosiX = (this.getWidth()) / this.terrain.getWidthInM();
-		double cosiY = (this.getHeight()) / this.terrain.getHeightInM();
+		double cosiX = (this.getWidth() - 20) / this.terrain.getWidthInM();
+		double cosiY = (this.getHeight() - 20) / this.terrain.getHeightInM();
 
-		System.out.println(cosiX + " VS " + cosiY);
+		// System.out.println(cosiX + " VS " + cosiY);
 
 		return Math.min(cosiX, cosiY);
+	}
+
+	public void setHitSpot(NamedPosition hitSpot) {
+		this.hitSpot = hitSpot;
+
 	}
 
 }

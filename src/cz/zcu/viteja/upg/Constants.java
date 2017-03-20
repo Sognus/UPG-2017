@@ -15,8 +15,9 @@ public final class Constants {
 
 	public static final Color targetColor = Color.BLUE;
 	public static final Color shooterColor = Color.RED;
+	public static final Color hitspotColor = Color.ORANGE;
 
-	public static final int drawAreaWidth = 280;
-	public static final int drawAreaHeight = 140;
+	public static final int preferedWindowWidth = 400;
+	public static final int preferedWindowHeight = 300;
 
 }

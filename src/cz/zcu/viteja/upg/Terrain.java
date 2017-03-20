@@ -12,6 +12,7 @@ public class Terrain {
 	private int columnCount;
 	private int rowCount;
 
+	@SuppressWarnings("unused")
 	private TerrainFileHandler fHandler;
 
 	public Terrain(int[][] terrain, int deltaXInMM, int deltaYInMM) {
