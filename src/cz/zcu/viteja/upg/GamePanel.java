@@ -3,6 +3,7 @@ package cz.zcu.viteja.upg;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
@@ -66,7 +67,7 @@ public class GamePanel extends JPanel {
 		if (terrain != null) {
 
 			terrain.draw(g2, scale);
-
+			g2.setClip(new Rectangle2D.Double(0, 0, terrain.getWidthInM() * scale, terrain.getHeightInM() * scale));
 		}
 
 		if (hitSpot != null) {

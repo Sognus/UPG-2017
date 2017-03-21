@@ -2,6 +2,7 @@ package cz.zcu.viteja.upg;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -13,7 +14,7 @@ import javax.swing.JFrame;
  * instancí na èásti aplikace.
  * 
  * @author Jakub Vítek - A16B0165P
- * @version 1.01.00
+ * @version 1.05.00
  *
  */
 public class Game {
@@ -62,16 +63,49 @@ public class Game {
 	 * 
 	 * @param args
 	 *            vstupní parametry aplikace
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// Uložit vstupní parametry tak, aby bylo možné pøistupovat k nim v celé
 		// tøídì
 		startArgs = args;
 
-		String fileName = "C:/Users/msogn/Desktop/workspace/UPG/data/rovny1metr_1km_x_1km.ter";
+		// Kontrola jestli je soubor zadán jako parametr z konzole
+		String fileName = (args.length < 3) ? "rovny1metr_1km_x_1km.ter" : args[2];
+
+		// Zjistí souèasné umístìní pracovního adresáøe
+		File relative = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		// Zjistí absolutní cestu k náhradnímu souboru
+		String absolute = relative.getParentFile().getAbsolutePath() + "\rovny1metr_1km_x_1km.ter";
+
+		// Ovìøí zda soubor existuje
+		String filePath = new File(fileName).exists() ? fileName : absolute;
+
+		// Ovìøí znovu, zda soubor existuje, pojistka pro pøípad, že by
+		// neexistoval ani náhradní soubor s terénem, aplikace se pak ukonèí
+		File f = new File(filePath);
+		if (!f.exists()) {
+			System.out.println("-----CHYBA APLIKACE----");
+			System.out.println("Aplikace nìkolikrát ovìøila, zda má k dispozici zadaný soubor s terénem.");
+			System.out.println("Požadovaný soubor i všechny záložní soubory pravdìpodobnì neexistují.");
+			System.out
+					.println("Pokud tuto aplikaci spouštíte v adresáøové struktuøe odevzdávané pro pøedmìt KIV/UPG, ");
+			System.out.println("nahrajte soubor rovny1metr_1km_x_1km.ter do koøene složky");
+			System.out.println(
+					"Pokud spouštíte aplikaci jinak, zadejte v 3. parametru pøi spouštìní cestu k platnému souboru s terénem.");
+
+			System.out.println();
+			System.out.println("APLIKACE BUDE UKONÈENA");
+			System.out.println("----------");
+
+			System.out.println("Ukonèení po stisku libovolné klávesy...");
+			System.in.read();
+			System.exit(-1);
+
+		}
 
 		// Naètení souboru
-		loadTerrain(fileName);
+		loadTerrain(filePath);
 
 		// Získání všech nutných instancí objektù, nastavení nutných promìnných
 		initData();
@@ -140,6 +174,8 @@ public class Game {
 				else {
 					System.out.println("VEDLE! Cíl nebyl zasažen!");
 				}
+
+				frame.setVisible(true);
 
 				startArgs = new String[0];
 				frame.repaint();

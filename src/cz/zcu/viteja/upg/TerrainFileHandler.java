@@ -98,6 +98,7 @@ public class TerrainFileHandler {
 		int rowsCount = terrain.length;
 		int columnsCount = terrain[0].length;
 
+		System.out.println();
 		System.out.println("-----Vypisuji informace o souboru s terénem-----");
 
 		System.out.println(String.format("Pocet sloupcu: %d, pocet radku: %d", columnsCount, rowsCount));
