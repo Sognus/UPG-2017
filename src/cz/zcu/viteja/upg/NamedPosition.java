@@ -5,6 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
+/**
+ * Tøída, jejíž instance reprezentují pozici a další dùležité vlastnosti všech
+ * klíèových pozicovatelných objektù (støelec, cíl, oblast zásahu).
+ * 
+ * @author Jakub Vítek A16B0165P
+ * @version 1.01.00
+ *
+ */
 public class NamedPosition {
 
 	// Konstanty
@@ -14,13 +22,40 @@ public class NamedPosition {
 	static final double mToMM = 0.001;
 
 	// Instanèní promìnné
+	/** Souøadnice objektu na ose X (v metrech) */
 	public double x;
+	/** Souøadnice objektu na ose Y (v metrech) */
 	public double y;
 
+	/**
+	 * Øetìzec reprezentující typ objektu (zda se jedná o cíl, støelce nebo
+	 * oblast zásahu
+	 */
 	public String positionType;
+	/** Barva, která se využívá pøi vykreslování objektu */
 	public Color color;
+	/**
+	 * Velikost objektu (pro støelce a cíl = velikost úseèky, pro oblast zásahu
+	 * = prùmìr kruhu
+	 */
 	public double size;
 
+	/**
+	 * Konstruktor tøídy NamedPosition, který uloží vstupní parametry do jejich
+	 * korespondujících promìnných
+	 * 
+	 * @param x
+	 *            souøadnice na ose X (v metrech)
+	 * @param y
+	 *            souøadnice na ose Y (v metrech)
+	 * @param positionType
+	 *            typ objektu (støelec, cíl nebo oblast zásahu)
+	 * @param color
+	 *            Barva použitá pøi vykreslování objektu
+	 * @param size
+	 *            Velikost objektu (pro cíl a støelce velikost úseèky, pro
+	 *            oblast zásahu prùmìr kruhu)
+	 */
 	public NamedPosition(double x, double y, String positionType, Color color, double size) {
 		this.x = x;
 		this.y = y;
@@ -42,6 +77,17 @@ public class NamedPosition {
 		return Math.sqrt(Math.pow(position.x - this.x, 2) + Math.pow(position.y - this.y, 2));
 	}
 
+	/**
+	 * 
+	 * Metoda, která se na základì vnitøního stavu objektu rothodne, zda se je
+	 * objekt støelcem/cílem nebo oblastí zásahu, na základì toho pak zavolá
+	 * korespondující vykreslovací metodu
+	 * 
+	 * @param g2
+	 *            grafický kontext
+	 * @param scale
+	 *            promìnná díky které lze pøevést metry na pixely
+	 */
 	public void draw(Graphics2D g2, double scale) {
 
 		switch (this.positionType) {
@@ -57,6 +103,14 @@ public class NamedPosition {
 
 	}
 
+	/**
+	 * Metoda která vykresluje oblast zásahu
+	 * 
+	 * @param g2
+	 *            grafický kontext
+	 * @param scale
+	 *            promìnná díky které lze pøevést metry na pixely
+	 */
 	private void drawHitspot(Graphics2D g2, double scale) {
 
 		// Pozice pro vykreslení -> size je prùmìr!!!;
@@ -67,6 +121,16 @@ public class NamedPosition {
 		g2.fill(new Ellipse2D.Double(positionDrawX, positionDrawY, this.size * scale, this.size * scale));
 	}
 
+	/**
+	 * Metoda, která vykresluje pozici støelce a cíle (vykreslení probíhá
+	 * stejnì, mìní se jen barva, která je uložena jako promìnná souèasné
+	 * instance.
+	 * 
+	 * @param g2
+	 *            grafický kontext
+	 * @param scale
+	 *            promìnná díky které lze pøevést metry na pixely
+	 */
 	private void drawTargetShooter(Graphics2D g2, double scale) {
 
 		double positionX = this.x * scale;

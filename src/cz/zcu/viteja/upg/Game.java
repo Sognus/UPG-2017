@@ -8,31 +8,53 @@ import java.io.InputStreamReader;
 import javax.swing.JFrame;
 
 /**
- * Hlavní tøída aplikace.
+ * Hlavní vstupní tøída aplikace, která zajištuje základní úkony, kterımi jsou
+ * napøíklad: naètení herní mapy ze souboru, získání a udrení všech dùleitıch
+ * instancí na èásti aplikace.
  * 
- * @author Jakub Vítek
- * @version 1.00.00
+ * @author Jakub Vítek - A16B0165P
+ * @version 1.01.00
  *
  */
 public class Game {
 
 	// Konstanty
-	/** pro pøevod mm na m */
+	/** konstanta pro pøevod mm na m */
 	static final double mmToM = 1000.0;
-	/** pro pøevod m na mm */
+	/** konstanta pro pøevod m na mm */
 	static final double mToMM = 0.001;
 
 	// Tøídní atributy
+	/** Reference na instanci, která zajišuje naèítání souboru terénu */
 	public static TerrainFileHandler terrainFile;
+	/** Reference na instanci, která reprezentuje naètenı herní terén */
 	public static Terrain terrain;
 
+	/**
+	 * Reference na instanci, která reprezentuje pozici a další vlastnosti
+	 * støelce
+	 */
 	public static NamedPosition shooter;
+	/**
+	 * Reference na instanci, která reprezentuje pozici a další vlastnosti cíle
+	 */
 	public static NamedPosition target;
+	/**
+	 * Reference na instanci, která na základì vstupních dat dokáe vypoèítat
+	 * dopad støely a ovìøit zda støela zasáhla èi minula
+	 */
 	public static ShootingCalculator shootingCalculator;
 
+	/** Reference na instanci okna aplikace */
 	public static JFrame frame;
+	/** Reference na instanci herního panelu, kterı je vykreslován v oknì */
 	public static GamePanel gamePanel;
 
+	/**
+	 * Reference na vstupní parametry, která je pouita, aby bylo moné k
+	 * parametrùm z console pøistupovat odkudkoliv ze tøídy ani by bylo nutné
+	 * pøedávat hodnoty jako argument metod
+	 */
 	private static String[] startArgs;
 
 	/**
@@ -61,6 +83,10 @@ public class Game {
 		gameMainLoop();
 	}
 
+	/**
+	 * Získá všechny nutné dùleité instance, bez kterıch by aplikace nemohla
+	 * pracovat a uloí je do korespondujících statickıch atributù
+	 */
 	public static void initData() {
 		shooter = new NamedPosition(terrainFile.shooterX * terrainFile.deltaX / Constants.mmToM,
 				terrainFile.shooterY * terrainFile.deltaY / Constants.mmToM, Constants.SHOOTER, Constants.shooterColor,
@@ -75,7 +101,15 @@ public class Game {
 		shootingCalculator = new ShootingCalculator(shooter, target);
 	}
 
+	/**
+	 * Metoda, která se stará o funkènost hlavního cyklu aplikace. Metoda se
+	 * pokusí získat hodnoty konzole parametrù, pokud je nenajde, zeptá se na
+	 * všechny potøebné hodnoty uivatele. Hlavní cyklus bìí tak dlouho, dokud
+	 * se uivatel nerozhodne ukonèit aplikaci
+	 */
 	public static void gameMainLoop() {
+
+		System.out.println("-----HRA-----");
 
 		while (true) {
 			try {
@@ -98,12 +132,13 @@ public class Game {
 
 				gamePanel.setHitSpot(shootingCalculator.getHitSpot());
 
+				System.out.println();
 				if (shootingCalculator.testTargetHit()) {
-					System.out.println("ZASAH");
+					System.out.println("ZÁSAH! Cíl byl znièen!");
 				}
 
 				else {
-					System.out.println("VEDLE");
+					System.out.println("VEDLE! Cíl nebyl zasaen!");
 				}
 
 				startArgs = new String[0];
@@ -111,17 +146,20 @@ public class Game {
 
 				// Zeptat se znova na hraní
 
-				System.out.print("Hrát znovu <a/n>: ");
+				System.out.println();
+				System.out.print("Hrát znovu? <ano/ne>: ");
 				String hrat = br.readLine();
 
 				if (!hrat.toLowerCase().equals("a") && !hrat.toLowerCase().equals("ano")
 						&& !hrat.toLowerCase().equals("true")) {
-					System.out.println("Hra byla ukonèena");
+					System.out.println("-----Hra byla ukonèena-----");
 
 					frame.setVisible(false);
 					frame.dispose();
 					break;
 				}
+
+				System.out.println("----------");
 
 			} catch (NumberFormatException | IOException e) {
 				System.out.println("Nepodaøil se pøeèíst vstup nebo zadanı vstup nebyl platnım èíslem");
@@ -132,17 +170,30 @@ public class Game {
 
 	}
 
+	/**
+	 * Na základì vstupního parametru, kterı reprezentuje jméno/cestu souboru,
+	 * ve kterém je v domluveném formátu uloen herní terén, naète všechny
+	 * potøebné informace ze souboru a vypíše základní informace o nìm.
+	 * 
+	 * @param filename
+	 *            jméno/cesta k souboru herního terénu
+	 */
 	public static void loadTerrain(String filename) {
 		terrainFile = new TerrainFileHandler();
 		terrainFile.loadTerFile(filename);
 		terrainFile.printData();
 	}
 
+	/**
+	 * Vytvoøí nové okno aplikace, do kterého pøidá panel, ve kterém lze
+	 * vykreslovat všechny potøebné komponenty.
+	 */
 	public static void makeWindow() {
 		frame = new JFrame();
 		gamePanel = new GamePanel(terrain, shooter, target);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		frame.setLayout(new BorderLayout());
 		gamePanel.setSize(Constants.preferedWindowWidth + 20, Constants.preferedWindowHeight + 20);
