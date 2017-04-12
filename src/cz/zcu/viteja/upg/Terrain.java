@@ -2,6 +2,13 @@ package cz.zcu.viteja.upg;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
+import javax.imageio.ImageIO;
 
 /**
  * Tøída reprezentující herní terén. Tato tøída nám poskytuje pøístup k
@@ -26,6 +33,9 @@ public class Terrain {
 	/** Poèet øádkù v terénu */
 	private int rowCount;
 
+	/** Bitmapa vytvoøená dle nadmoøské výšky */
+	private BufferedImage terrainImage;
+
 	@SuppressWarnings("unused")
 	/**
 	 * Pomocná reference na instanci, která zajištuje náèítání terénu ze souboru
@@ -47,6 +57,10 @@ public class Terrain {
 		this.terrain = terrain;
 		this.deltaXInMM = deltaXInMM;
 		this.deltaYInMM = deltaYInMM;
+		this.rowCount = this.terrain.length;
+		this.columnCount = this.terrain[0].length;
+		
+		this.makeImage();
 	}
 
 	/**
@@ -103,11 +117,18 @@ public class Terrain {
 	 *            promìnná díky které lze pøevádìt metry na pixely
 	 */
 	public void draw(Graphics2D g2, double scale) {
-
+		
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
-		g2.setColor(Color.black);
-		g2.drawRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
+		
+		
+		g2.drawImage(this.terrainImage, 0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale), null);
+		//g2.drawImage(this.terrainImage, 0, 0, null);
+		
+		//g2.setColor(Color.black);
+		//g2.drawRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
+		
+		
 
 	}
 
@@ -128,6 +149,76 @@ public class Terrain {
 	 */
 	public double getHeightInM() {
 		return (rowCount * deltaYInMM / 1000.0);
+
+	}
+
+	public BufferedImage makeImage() {
+		if (this.terrainImage != null)
+		{
+			System.out.println("ZASTAVENI");
+			return this.terrainImage;
+		}
+			
+		this.terrainImage = new BufferedImage(columnCount, rowCount, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D imgGraphics = (Graphics2D) terrainImage.createGraphics();
+
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		
+		for (int y = 0; y < rowCount; y++) {
+			for (int x = 0; x < columnCount; x++) {
+				int val = this.terrain[y][x];
+				
+				if(val > max)
+				{
+					max = val;
+				}
+				
+				if(val < min )
+				{
+					min = val;
+				}
+			}
+		}
+		
+
+
+		// min = 999;
+
+		// Terén je rovný
+		if (max == min) {
+			imgGraphics.setColor(Color.gray);
+			imgGraphics.fillRect(0, 0, columnCount, rowCount);
+		} else {
+			for (int y = 0; y < rowCount; y++) {
+				for (int x = 0; x < columnCount; x++) {
+					int val = this.terrain[y][x];
+					double step = (max - min) / 256;
+					int rgb = (int)(val / step);
+					
+					// Korekce
+					rgb = rgb > 255 ? 255 : rgb;
+					rgb = rgb < 0 ? 0 : rgb;
+					
+					//System.out.println(rgb);
+					
+					Color color = new Color(rgb, rgb, rgb, 0);
+					terrainImage.setRGB(x, y, color.getRGB());
+					
+				}
+			}
+		}
+		
+		File outputfile = new File("image.jpg");
+		try {
+			ImageIO.write(terrainImage, "jpg", outputfile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		imgGraphics.dispose();
+		return terrainImage;
 
 	}
 }

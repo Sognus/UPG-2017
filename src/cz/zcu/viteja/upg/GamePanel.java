@@ -57,8 +57,8 @@ public class GamePanel extends JPanel {
 		super.paint(g);
 
 		Graphics2D g2 = (Graphics2D) g;
-		RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHints(hints);
+		//RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		//g2.setRenderingHints(hints);
 
 		g2.translate(10, 10);
 
