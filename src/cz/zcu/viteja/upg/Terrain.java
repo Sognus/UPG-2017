@@ -61,7 +61,7 @@ public class Terrain {
 		this.columnCount = this.terrain[0].length;
 		
 		this.makeImage();
-	}
+		}
 
 	/**
 	 * Rozšíøený konstruktor, který navíc oproti pùvodnímu konstruktoru jako
@@ -83,6 +83,8 @@ public class Terrain {
 		this(terrain, deltaXInMM, deltaYInMM);
 		this.columnCount = columnCount;
 		this.rowCount = rowCount;
+		
+		this.makeImage();
 
 	}
 
@@ -159,7 +161,7 @@ public class Terrain {
 			return this.terrainImage;
 		}
 			
-		this.terrainImage = new BufferedImage(columnCount, rowCount, BufferedImage.TYPE_INT_ARGB);
+		this.terrainImage = new BufferedImage(columnCount, rowCount, BufferedImage.TYPE_INT_RGB);
 		Graphics2D imgGraphics = (Graphics2D) terrainImage.createGraphics();
 
 		int min = Integer.MAX_VALUE;
@@ -200,10 +202,9 @@ public class Terrain {
 					rgb = rgb > 255 ? 255 : rgb;
 					rgb = rgb < 0 ? 0 : rgb;
 					
-					//System.out.println(rgb);
 					
-					Color color = new Color(rgb, rgb, rgb, 0);
-					terrainImage.setRGB(x, y, color.getRGB());
+					Color color = new Color(rgb, rgb, rgb, 1);
+					terrainImage.setRGB(x, y, color.getRGB());	
 					
 				}
 			}
@@ -217,7 +218,6 @@ public class Terrain {
 			e.printStackTrace();
 		}
 		
-		imgGraphics.dispose();
 		return terrainImage;
 
 	}
