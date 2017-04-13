@@ -11,6 +11,10 @@ import java.awt.Color;
  */
 public final class Constants {
 
+	/** Pøepíná program do debugovacího módu */
+	public static boolean DEBUG = false;
+	
+	
 	/** pro pøevod mm na m */
 	public static final double mmToM = 1000.0;
 	/** pro pøevod m na mm */
@@ -29,8 +33,13 @@ public final class Constants {
 	public static final Color shooterColor = Color.RED;
 	/** Barva vykreslování oblasti zásahu v rámci aplikace */
 	public static final Color hitspotColor = Color.ORANGE;
+	
+	public static final String shooterImagePath = "images/shooterRed.png";
+	public static final String targetImagePath = "images/targetBlue.png";
 
 	public static final int preferedWindowWidth = 400;
 	public static final int preferedWindowHeight = 300;
+
+
 
 }

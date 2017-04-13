@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -16,7 +14,7 @@ import javax.imageio.ImageIO;
  * souøadnicích terénu a další..
  * 
  * @author Jakub Vítek - A16B0165P
- * @version 1.01.00
+ * @version 1.02.00
  *
  */
 public class Terrain {
@@ -59,9 +57,9 @@ public class Terrain {
 		this.deltaYInMM = deltaYInMM;
 		this.rowCount = this.terrain.length;
 		this.columnCount = this.terrain[0].length;
-		
+
 		this.makeImage();
-		}
+	}
 
 	/**
 	 * Rozšíøený konstruktor, který navíc oproti pùvodnímu konstruktoru jako
@@ -83,7 +81,7 @@ public class Terrain {
 		this(terrain, deltaXInMM, deltaYInMM);
 		this.columnCount = columnCount;
 		this.rowCount = rowCount;
-		
+
 		this.makeImage();
 
 	}
@@ -119,18 +117,16 @@ public class Terrain {
 	 *            promìnná díky které lze pøevádìt metry na pixely
 	 */
 	public void draw(Graphics2D g2, double scale) {
-		
+
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
-		
-		
+
 		g2.drawImage(this.terrainImage, 0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale), null);
-		//g2.drawImage(this.terrainImage, 0, 0, null);
-		
-		//g2.setColor(Color.black);
-		//g2.drawRect(0, 0, (int) (getWidthInM() * scale), (int) (getHeightInM() * scale));
-		
-		
+		// g2.drawImage(this.terrainImage, 0, 0, null);
+
+		// g2.setColor(Color.black);
+		// g2.drawRect(0, 0, (int) (getWidthInM() * scale), (int)
+		// (getHeightInM() * scale));
 
 	}
 
@@ -155,35 +151,29 @@ public class Terrain {
 	}
 
 	public BufferedImage makeImage() {
-		if (this.terrainImage != null)
-		{
-			System.out.println("ZASTAVENI");
+		if (this.terrainImage != null) {
 			return this.terrainImage;
 		}
-			
+
 		this.terrainImage = new BufferedImage(columnCount, rowCount, BufferedImage.TYPE_INT_RGB);
 		Graphics2D imgGraphics = (Graphics2D) terrainImage.createGraphics();
 
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
-		
+
 		for (int y = 0; y < rowCount; y++) {
 			for (int x = 0; x < columnCount; x++) {
 				int val = this.terrain[y][x];
-				
-				if(val > max)
-				{
+
+				if (val > max) {
 					max = val;
 				}
-				
-				if(val < min )
-				{
+
+				if (val < min) {
 					min = val;
 				}
 			}
 		}
-		
-
 
 		// min = 999;
 
@@ -196,20 +186,19 @@ public class Terrain {
 				for (int x = 0; x < columnCount; x++) {
 					int val = this.terrain[y][x];
 					double step = (max - min) / 256;
-					int rgb = (int)(val / step);
-					
+					int rgb = (int) (val / step);
+
 					// Korekce
 					rgb = rgb > 255 ? 255 : rgb;
 					rgb = rgb < 0 ? 0 : rgb;
-					
-					
+
 					Color color = new Color(rgb, rgb, rgb, 1);
-					terrainImage.setRGB(x, y, color.getRGB());	
-					
+					terrainImage.setRGB(x, y, color.getRGB());
+
 				}
 			}
 		}
-		
+
 		File outputfile = new File("image.jpg");
 		try {
 			ImageIO.write(terrainImage, "jpg", outputfile);
@@ -217,7 +206,7 @@ public class Terrain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return terrainImage;
 
 	}

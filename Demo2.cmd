@@ -1,0 +1,1 @@
+call Run.cmd -120 230 terrain257x257.ter

@@ -124,7 +124,7 @@ public class Game {
 	public static void initData() {
 		shooter = new NamedPosition(terrainFile.shooterX * terrainFile.deltaX / Constants.mmToM,
 				terrainFile.shooterY * terrainFile.deltaY / Constants.mmToM, Constants.SHOOTER, Constants.shooterColor,
-				10.0);
+				20.0);
 		target = new NamedPosition(terrainFile.targetX * terrainFile.deltaX / Constants.mmToM,
 				terrainFile.targetY * terrainFile.deltaY / Constants.mmToM, Constants.TARGET, Constants.targetColor,
 				10.0);

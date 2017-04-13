@@ -1,0 +1,1 @@
+call Run.cmd 0 500 rovny1metr_1km_x_1km.ter
