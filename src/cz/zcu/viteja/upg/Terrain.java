@@ -150,6 +150,24 @@ public class Terrain {
 
 	}
 
+	/**
+	 * Vrátí aktuální šíøku herního terénu v pixelech
+	 * 
+	 * @return šíøka terénu v pixelech
+	 */
+	public double getWidthInPixels() {
+		return this.getWidthInM() * Game.gamePanel.getScale();
+	}
+
+	/**
+	 * Vrátí aktuální šíøku herního terénu v pixelech
+	 * 
+	 * @return šíøka terénu v pixelech
+	 */
+	public double getHeightInPixels() {
+		return this.getHeightInM() * Game.gamePanel.getScale();
+	}
+
 	public BufferedImage makeImage() {
 		if (this.terrainImage != null) {
 			return this.terrainImage;

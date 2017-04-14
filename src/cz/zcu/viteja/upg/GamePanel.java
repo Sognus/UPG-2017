@@ -57,8 +57,8 @@ public class GamePanel extends JPanel {
 		super.paint(g);
 
 		Graphics2D g2 = (Graphics2D) g;
-		//RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		//g2.setRenderingHints(hints);
+		RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHints(hints);
 
 		g2.translate(10, 10);
 
@@ -70,12 +70,6 @@ public class GamePanel extends JPanel {
 			g2.setClip(new Rectangle2D.Double(0, 0, terrain.getWidthInM() * scale, terrain.getHeightInM() * scale));
 		}
 
-		if (hitSpot != null) {
-
-			hitSpot.draw(g2, scale);
-
-		}
-
 		if (shooter != null) {
 
 			shooter.draw(g2, scale);
@@ -85,6 +79,12 @@ public class GamePanel extends JPanel {
 		if (target != null) {
 
 			target.draw(g2, scale);
+
+		}
+
+		if (hitSpot != null) {
+
+			hitSpot.draw(g2, scale);
 
 		}
 

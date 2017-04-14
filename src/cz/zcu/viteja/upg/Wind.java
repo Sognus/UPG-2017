@@ -1,6 +1,8 @@
 package cz.zcu.viteja.upg;
 
+import java.util.Observable;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Tøída reprezentující simulovaný vítr
@@ -9,10 +11,10 @@ import java.util.Random;
  * @version 1.00.00
  *
  */
-public class Wind {
+public class Wind extends Observable {
 
 	/** Maximální absolutní hodnota, o kterou se mùže zmìnit smìr vìtru */
-	private static final double MAX_AZIMUTH_SHIFT = 5;
+	private static final double MAX_AZIMUTH_SHIFT = 0.5;
 	/** Maximální absolutní hodnota, o kterou se mùže zmìnit rychlost vìtru */
 	private static final double MAX_VELOCITY_SHIFT = 5;
 
@@ -53,6 +55,77 @@ public class Wind {
 
 		double azimuthDiff = 0 + (Wind.MAX_AZIMUTH_SHIFT - (-1 * Wind.MAX_AZIMUTH_SHIFT)) * random.nextDouble();
 		this.setAzimuth(this.azimuth + azimuthDiff);
+
+		this.setChanged();
+		this.notifyObservers();
+
+	}
+
+	public void generateParamsAnimated() {
+
+		double velocityDiff = ThreadLocalRandom.current().nextDouble(-1 * Wind.MAX_VELOCITY_SHIFT,
+				Wind.MAX_VELOCITY_SHIFT);
+		this.setVelocity(this.velocity + velocityDiff);
+
+		double azimuthDiff = ThreadLocalRandom.current().nextDouble(-1 * Wind.MAX_AZIMUTH_SHIFT,
+				Wind.MAX_AZIMUTH_SHIFT);
+		double newAzimunth = this.azimuth + azimuthDiff;
+
+		boolean vetsi = newAzimunth > this.getAzimuth();
+		Wind current = this;
+
+		// Nastavení
+		int msToWait = 10;
+		double step = 0.01;
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				double diff;
+
+				try {
+					if (vetsi) {
+						diff = newAzimunth - current.getAzimuth();
+
+						long startTime = System.nanoTime();
+						while (diff > 0) {
+							current.setAzimuth(current.getAzimuth() + step);
+							diff = newAzimunth - current.getAzimuth();
+							System.out.println("DiffVetsi: " + diff);
+							current.setChanged();
+							current.notifyObservers();
+							Thread.sleep(msToWait);
+
+							long cTime = System.nanoTime();
+							if ((cTime - startTime) >= 125000000)
+								break;
+						}
+					} else {
+						diff = current.getAzimuth() - newAzimunth;
+
+						long startTime = System.nanoTime();
+						while (diff >= 0) {
+							current.setAzimuth(current.getAzimuth() - step);
+							diff = current.getAzimuth() - newAzimunth;
+							System.out.println("DiffMensi: " + diff);
+							current.setChanged();
+							current.notifyObservers();
+							Thread.sleep(msToWait);
+
+							long cTime = System.nanoTime();
+							if ((cTime - startTime) >= 125000000)
+								break;
+						}
+					}
+
+					current.setAzimuth(newAzimunth);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
 	}
 
 	/**
@@ -77,6 +150,7 @@ public class Wind {
 			azimuthFix = azimuthFix % 2.0;
 
 		this.azimuth = azimuthFix;
+
 	}
 
 	/**
@@ -104,6 +178,7 @@ public class Wind {
 			velocityFix = 0;
 
 		this.velocity = velocityFix;
+
 	}
 
 	/**

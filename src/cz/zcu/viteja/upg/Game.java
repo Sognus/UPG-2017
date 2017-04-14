@@ -1,10 +1,11 @@
 package cz.zcu.viteja.upg;
 
-import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 
@@ -48,8 +49,12 @@ public class Game {
 
 	/** Reference na instanci okna aplikace */
 	public static JFrame frame;
-	/** Reference na instanci herního panelu, který je vykreslován v oknì */
+	/**
+	 * Reference na instanci herního panelu, který je vykreslován v oknì - terén
+	 */
 	public static GamePanel gamePanel;
+	/** Reference na instanci panelu pro vykreslení smìru a intenzity vìtru */
+	public static CompassPanel compassPanel;
 
 	/**
 	 * Reference na vstupní parametry, která je použita, aby bylo možné k
@@ -57,6 +62,9 @@ public class Game {
 	 * pøedávat hodnoty jako argument metod
 	 */
 	private static String[] startArgs;
+
+	/** Reference na instanci vìtru */
+	private static Wind wind;
 
 	/**
 	 * Hlavní metoda aplikace
@@ -127,12 +135,14 @@ public class Game {
 				20.0);
 		target = new NamedPosition(terrainFile.targetX * terrainFile.deltaX / Constants.mmToM,
 				terrainFile.targetY * terrainFile.deltaY / Constants.mmToM, Constants.TARGET, Constants.targetColor,
-				10.0);
+				20.0);
 
 		terrain = new Terrain(terrainFile.terrain, terrainFile.deltaX, terrainFile.deltaY, terrainFile.rows,
 				terrainFile.columns);
 
 		shootingCalculator = new ShootingCalculator(shooter, target);
+
+		wind = new Wind(100);
 	}
 
 	/**
@@ -195,6 +205,9 @@ public class Game {
 					break;
 				}
 
+				// wind.generateParams();
+				wind.generateParamsAnimated();
+
 				System.out.println("----------");
 
 			} catch (NumberFormatException | IOException e) {
@@ -226,18 +239,23 @@ public class Game {
 	 */
 	public static void makeWindow() {
 		frame = new JFrame();
+
+		// Nastavení panelù
 		gamePanel = new GamePanel(terrain, shooter, target);
-
-		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		frame.setLayout(new BorderLayout());
 		gamePanel.setSize(Constants.preferedWindowWidth + 20, Constants.preferedWindowHeight + 20);
-		frame.add(gamePanel, BorderLayout.CENTER);
 
+		compassPanel = new CompassPanel(wind);
+		wind.addObserver((Observer) compassPanel);
+
+		// Nastavení layoutù
+		frame.setLayout(new GridLayout());
+		frame.add(gamePanel);
+		frame.add(compassPanel);
+
+		// Zobrazení a interakce
 		frame.setTitle("Prototyp 1 | J. Vítek | A16B0165P");
 		frame.pack();
-
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setSize(Constants.preferedWindowWidth, Constants.preferedWindowHeight);
