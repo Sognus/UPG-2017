@@ -195,6 +195,9 @@ public class NamedPosition {
 
 	}
 
+	/**
+	 * Naète obrázek (piktogram) ze souboru na základì typu pozice
+	 */
 	private void loadImage() {
 		if (this.positionType.equals(Constants.HITSPOT)) {
 			return;

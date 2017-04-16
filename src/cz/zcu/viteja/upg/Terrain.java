@@ -34,7 +34,6 @@ public class Terrain {
 	/** Bitmapa vytvoøená dle nadmoøské vıšky */
 	private BufferedImage terrainImage;
 
-	@SuppressWarnings("unused")
 	/**
 	 * Pomocná reference na instanci, která zajištuje náèítání terénu ze souboru
 	 */
@@ -168,6 +167,12 @@ public class Terrain {
 		return this.getHeightInM() * Game.gamePanel.getScale();
 	}
 
+	/**
+	 * Na základì aktuálního naèteného terénu vytvoøí bitmapu, reprezentující
+	 * terén. Pokud bitmapa ji existuje, bude vrácena existující bitmapa.
+	 * 
+	 * @return bitmapa terénu
+	 */
 	public BufferedImage makeImage() {
 		if (this.terrainImage != null) {
 			return this.terrainImage;

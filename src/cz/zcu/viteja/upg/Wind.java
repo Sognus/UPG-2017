@@ -46,9 +46,37 @@ public class Wind extends Observable {
 	}
 
 	/**
+	 * Vrátí x-ovou složku vektoru vìtru
+	 * 
+	 * @return x-ová složka vektoru vìtru
+	 */
+	public double slozkaX() {
+		return this.velocity * Math.cos(-this.azimuth);
+	}
+
+	/**
+	 * Vrátí y-ovou složku vektoru vìtru
+	 * 
+	 * @return y-ová složka vektoru vìtru
+	 */
+	public double slozkaY() {
+		return this.velocity * Math.sin(-this.azimuth);
+	}
+
+	/**
+	 * Vrátí z-ovou složku vektoru vìtru
+	 * 
+	 * @return z-ová složka vektoru vìtru
+	 */
+	public double slozkaZ() {
+		return 0.0;
+	}
+
+	/**
 	 * Vygeneruje nové parametry vìtru
 	 * 
 	 */
+	@Deprecated
 	public void generateParams() {
 		double velocityDiff = 0 + (Wind.MAX_VELOCITY_SHIFT - (-1 * Wind.MAX_VELOCITY_SHIFT)) * random.nextDouble();
 		this.setVelocity(this.velocity + velocityDiff);
@@ -61,6 +89,9 @@ public class Wind extends Observable {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void generateParamsAnimated() {
 
 		double velocityDiff = ThreadLocalRandom.current().nextDouble(-1 * Wind.MAX_VELOCITY_SHIFT,
@@ -91,7 +122,7 @@ public class Wind extends Observable {
 						while (diff > 0) {
 							current.setAzimuth(current.getAzimuth() + step);
 							diff = newAzimunth - current.getAzimuth();
-							System.out.println("DiffVetsi: " + diff);
+							// System.out.println("DiffVetsi: " + diff);
 							current.setChanged();
 							current.notifyObservers();
 							Thread.sleep(msToWait);
@@ -107,7 +138,7 @@ public class Wind extends Observable {
 						while (diff >= 0) {
 							current.setAzimuth(current.getAzimuth() - step);
 							diff = current.getAzimuth() - newAzimunth;
-							System.out.println("DiffMensi: " + diff);
+							// System.out.println("DiffMensi: " + diff);
 							current.setChanged();
 							current.notifyObservers();
 							Thread.sleep(msToWait);

@@ -1,1 +1,1 @@
-call Run.cmd 50 40 terrain512x512.ter
+call Run.cmd 50 40 sikmy45stupnu.ter

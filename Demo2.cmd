@@ -1,1 +1,1 @@
-call Run.cmd -120 230 terrain257x257.ter
+call Run.cmd -120 45 50 terrain257x257.ter

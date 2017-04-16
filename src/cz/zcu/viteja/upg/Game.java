@@ -55,6 +55,10 @@ public class Game {
 	public static GamePanel gamePanel;
 	/** Reference na instanci panelu pro vykreslení smìru a intenzity vìtru */
 	public static CompassPanel compassPanel;
+	/** Reference na instanci vìtru */
+	public static Wind wind;
+	/** Reference na trajektorii */
+	public static Trajectory trajectory;
 
 	/**
 	 * Reference na vstupní parametry, která je použita, aby bylo možné k
@@ -62,9 +66,6 @@ public class Game {
 	 * pøedávat hodnoty jako argument metod
 	 */
 	private static String[] startArgs;
-
-	/** Reference na instanci vìtru */
-	private static Wind wind;
 
 	/**
 	 * Hlavní metoda aplikace
@@ -79,7 +80,7 @@ public class Game {
 		startArgs = args;
 
 		// Kontrola jestli je soubor zadán jako parametr z konzole
-		String fileName = (args.length < 3) ? "rovny1metr_1km_x_1km.ter" : args[2];
+		String fileName = (args.length < 4) ? "rovny1metr_1km_x_1km.ter" : args[3];
 
 		// Zjistí souèasné umístìní pracovního adresáøe
 		File relative = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -159,20 +160,27 @@ public class Game {
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				double azimuth;
-				double distance;
-				if (startArgs.length >= 2 && !startArgs.equals(null)) {
+				double elevace;
+				double rychlost;
+				if (startArgs.length >= 3 && !startArgs.equals(null)) {
 					azimuth = Double.valueOf(startArgs[0]);
-					distance = Double.valueOf(startArgs[1]);
+					elevace = Double.valueOf(startArgs[1]);
+					rychlost = Double.valueOf(startArgs[2]);
 				} else {
 
 					System.out.print("Zadejte azimut: ");
 					azimuth = Double.valueOf(br.readLine());
 
-					System.out.print("Zadejte vzdálenost støelby: ");
-					distance = Double.valueOf(br.readLine());
+					System.out.print("Zadejte elevaci støelby: ");
+					elevace = Double.valueOf(br.readLine());
+
+					System.out.print("Zadejte rychlost støely: ");
+					rychlost = Double.valueOf(br.readLine());
+
 				}
 
-				shootingCalculator.shoot(azimuth, distance);
+				// shootingCalculator.shoot(azimuth, distance);
+				shootingCalculator.shoot(azimuth, elevace, rychlost);
 
 				gamePanel.setHitSpot(shootingCalculator.getHitSpot());
 
@@ -242,6 +250,7 @@ public class Game {
 
 		// Nastavení panelù
 		gamePanel = new GamePanel(terrain, shooter, target);
+		gamePanel.trajectory = trajectory;
 		gamePanel.setSize(Constants.preferedWindowWidth + 20, Constants.preferedWindowHeight + 20);
 
 		compassPanel = new CompassPanel(wind);
