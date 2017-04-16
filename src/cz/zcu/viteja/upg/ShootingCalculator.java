@@ -52,9 +52,9 @@ public class ShootingCalculator {
 
 		this.gx = 0.0;
 		this.gy = 0.0;
-		this.gz = 10; // gravitacni zrychleni (vychozi = 10)
-		this.b = 0.05; // koef. vlivu vetru / odporu vzduchu (vychozi = 0.05)
-		this.deltaT = 0.001; // casovy krok (vychozi = 0.01)
+		this.gz = 10;
+		this.b = 0.05;
+		this.deltaT = 0.01;
 	}
 
 	/**

@@ -1,1 +1,1 @@
-call Run.cmd 50 40 sikmy45stupnu.ter
+call Run.cmd 0 45 15 sikmy45stupnu.ter
