@@ -9,6 +9,8 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
+import cz.zcu.viteja.upg.graph.DependencyGraph;
+
 /**
  * Hlavní vstupní tøída aplikace, která zajištuje základní úkony, kterými jsou
  * napøíklad: naètení herní mapy ze souboru, získání a udržení všech dùležitých
@@ -49,6 +51,7 @@ public class Game {
 
 	/** Reference na instanci okna aplikace */
 	public static JFrame frame;
+	public static JFrame dependencyGraphFrame;
 	/**
 	 * Reference na instanci herního panelu, který je vykreslován v oknì - terén
 	 */
@@ -66,6 +69,8 @@ public class Game {
 	 * pøedávat hodnoty jako argument metod
 	 */
 	private static String[] startArgs;
+	
+	public  static boolean graphMainLoopRunning;
 
 	/**
 	 * Hlavní metoda aplikace
@@ -140,8 +145,9 @@ public class Game {
 		{
 			System.out.println("MENU:");
 			System.out.println("[0] Hrát");
-			System.out.println("[1] Vizualizovat data");
-			System.out.println("[2] Ukonèit aplikaci");
+			System.out.println("[1] Zobrazit graf závislosti vstupních parametrù na výslednou vzdálenost støely");
+			System.out.println("[2] Druhý graf");
+			System.out.println("[3] Ukonèit aplikaci");
 			
 			System.out.println();
 			System.out.print("Jaká je vaše volba: ");
@@ -152,14 +158,35 @@ public class Game {
 				
 				switch (odpoved) {
 				case "0":
+					if(dependencyGraphFrame != null)
+					{
+						dependencyGraphFrame.dispose();
+					}
+					
 					System.out.println();
 					frame.setVisible(true);
 					gameMainLoop();
 					break;
 				case "1":
 					// TODO: vytvoøit vykreslování grafù
+					if(dependencyGraphFrame != null)
+					{
+						dependencyGraphFrame.dispose();
+					}
+					
+					
+					frame.setVisible(false);
+					DependencyGraph dg = new DependencyGraph();
+					dependencyGraphFrame = dg.makeWindow();
+					dependencyGraphFrame.setVisible(true);
+					
 					break;
-				case "2":
+				case "3":
+					if(dependencyGraphFrame != null)
+					{
+						dependencyGraphFrame.dispose();
+					}
+					
 					System.out.println("*****UKONÈUJI APLIKACI*****");
 					running = false;
 					break;
@@ -316,7 +343,7 @@ public class Game {
 		frame.add(compassPanel);
 
 		// Zobrazení a interakce
-		frame.setTitle("Prototyp 1 | J. Vítek | A16B0165P");
+		frame.setTitle("Støelec - Herní okno | J. Vítek | A16B0165P");
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);

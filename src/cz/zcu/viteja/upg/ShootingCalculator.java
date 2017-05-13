@@ -204,6 +204,10 @@ public class ShootingCalculator {
 
 	}
 
+	public double getGravityConstant() {
+		return gz;
+	}
+
 	/**
 	 * Metoda, která vrací pravdivností hodnotu o tom, zda byl treferen cíl.
 	 * Pokud jsme ještì nevystøelili, nemáme žádnou instanci oblasti zásahu,
