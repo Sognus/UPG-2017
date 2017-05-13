@@ -121,9 +121,63 @@ public class Game {
 
 		// Vytvoøení okna
 		makeWindow();
+		
+		// Rozhodnutí mezi vykreslením grafù a hlavním cyklem
+		graphsOrGame();
 
 		// Hlavní herní cyklus
-		gameMainLoop();
+		//gameMainLoop();
+	}
+
+	private static void graphsOrGame() {
+		
+		// Nekoneèný cyklus
+		boolean running = true;
+		
+		System.out.println("-----Vítejte na støelnici-----");
+		
+		while(running)
+		{
+			System.out.println("MENU:");
+			System.out.println("[0] Hrát");
+			System.out.println("[1] Vizualizovat data");
+			System.out.println("[2] Ukonèit aplikaci");
+			
+			System.out.println();
+			System.out.print("Jaká je vaše volba: ");
+			
+			try {
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				String odpoved = br.readLine();
+				
+				switch (odpoved) {
+				case "0":
+					System.out.println();
+					frame.setVisible(true);
+					gameMainLoop();
+					break;
+				case "1":
+					// TODO: vytvoøit vykreslování grafù
+					break;
+				case "2":
+					System.out.println("*****UKONÈUJI APLIKACI*****");
+					running = false;
+					break;
+				default:
+					System.out.println("-----Neplatná volba, budete navrácen/a do menu-----");
+					System.out.println();
+					System.out.println();
+					break;
+				}
+				
+			} catch (Exception e) {
+				System.out.println("Pøi ètení vstupu z console nastala chyba!");
+			}
+			
+			System.out.println();
+			
+		}
+		
 	}
 
 	/**
@@ -201,12 +255,12 @@ public class Game {
 				// Zeptat se znova na hraní
 
 				System.out.println();
-				System.out.print("Hrát znovu? <ano/ne>: ");
+				System.out.print("Návrat do herního menu? <ano/ne>: ");
 				String hrat = br.readLine();
 
-				if (!hrat.toLowerCase().equals("a") && !hrat.toLowerCase().equals("ano")
-						&& !hrat.toLowerCase().equals("true")) {
-					System.out.println("-----Hra byla ukonèena-----");
+				if (hrat.toLowerCase().equals("a") || hrat.toLowerCase().equals("ano")
+						|| hrat.toLowerCase().equals("true")) {
+					System.out.println("-----Návrat do hlavního menu-----");
 
 					frame.setVisible(false);
 					frame.dispose();
@@ -266,7 +320,6 @@ public class Game {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 		frame.setSize(Constants.preferedWindowWidth, Constants.preferedWindowHeight);
 	}
 }
