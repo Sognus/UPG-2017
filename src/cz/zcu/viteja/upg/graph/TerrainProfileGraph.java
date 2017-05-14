@@ -255,7 +255,7 @@ public class TerrainProfileGraph extends JPanel {
 		terrainPoints = new ArrayList<Vector3>();
 		
 		double size = Game.terrain.getWidthInM();
-		double distance = size/200.0;
+		double distance = size/200;
 		double x = Game.shooter.x;
 		double y = Game.shooter.y;
 		double z = Game.terrain.getAltitudeInM(x, y);
