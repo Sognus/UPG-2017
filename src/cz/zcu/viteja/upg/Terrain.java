@@ -233,4 +233,12 @@ public class Terrain {
 		return terrainImage;
 
 	}
+
+	public boolean isPointInVisibleTerrain(double x, double y) {
+		if(x >= 0 && x <= getWidthInM() && y >= 0 && y <= getHeightInM()) {
+			return true;
+		
+		}
+		return false;
+	}
 }

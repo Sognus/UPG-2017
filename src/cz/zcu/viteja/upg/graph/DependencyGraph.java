@@ -92,7 +92,7 @@ public class DependencyGraph extends JPanel {
 		XYSeriesCollection ds = new XYSeriesCollection();
 		ds.addSeries(data);
 		graph = ChartFactory.createXYLineChart(
-				"Vzdálenost [m]", "Vzdálenost", "Poèáteèní rychlost [m/s]",
+				"Graf dostøelu","Poèáteèní rychlost [m/s]", "Dostøel [m]", 
 				ds, PlotOrientation.VERTICAL,
 				false, true, false);
 		XYPlot plot = (XYPlot) graph.getPlot();
@@ -176,7 +176,7 @@ public class DependencyGraph extends JPanel {
 		controlPane.add(filler, c);
 		
 		// Buttons
-		JButton buttonChange = new JButton("Aktualizovat vstupy");
+		JButton buttonChange = new JButton("Pøekreslit graf");
 		buttonChange.setAlignmentX(CENTER_ALIGNMENT);
 
 		
@@ -252,7 +252,6 @@ public class DependencyGraph extends JPanel {
 		
 		
 		// Zobrazení a interakce
-		dependencyGraphFrame.setTitle("Prototyp 1 | J. Vítek | A16B0165P");
 		dependencyGraphFrame.pack();
 		dependencyGraphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		dependencyGraphFrame.setLocationRelativeTo(null);

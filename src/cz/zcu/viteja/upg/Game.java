@@ -10,6 +10,7 @@ import java.util.Observer;
 import javax.swing.JFrame;
 
 import cz.zcu.viteja.upg.graph.DependencyGraph;
+import cz.zcu.viteja.upg.graph.TerrainProfileGraph;
 
 /**
  * Hlavní vstupní tøída aplikace, která zajištuje základní úkony, kterými jsou
@@ -71,6 +72,7 @@ public class Game {
 	private static String[] startArgs;
 	
 	public  static boolean graphMainLoopRunning;
+	public static JFrame terrainProfileGraphFrame;
 
 	/**
 	 * Hlavní metoda aplikace
@@ -146,7 +148,7 @@ public class Game {
 			System.out.println("MENU:");
 			System.out.println("[0] Hrát");
 			System.out.println("[1] Zobrazit graf závislosti vstupních parametrù na výslednou vzdálenost støely");
-			System.out.println("[2] Druhý graf");
+			System.out.println("[2] Zobrazit graf profilu terénu");
 			System.out.println("[3] Ukonèit aplikaci");
 			
 			System.out.println();
@@ -163,6 +165,11 @@ public class Game {
 						dependencyGraphFrame.dispose();
 					}
 					
+					if(terrainProfileGraphFrame != null)
+					{
+						terrainProfileGraphFrame.dispose();
+					}
+					
 					System.out.println();
 					frame.setVisible(true);
 					gameMainLoop();
@@ -174,6 +181,11 @@ public class Game {
 						dependencyGraphFrame.dispose();
 					}
 					
+					if(terrainProfileGraphFrame != null)
+					{
+						terrainProfileGraphFrame.dispose();
+					}
+					
 					
 					frame.setVisible(false);
 					DependencyGraph dg = new DependencyGraph();
@@ -181,12 +193,23 @@ public class Game {
 					dependencyGraphFrame.setVisible(true);
 					
 					break;
-				case "3":
+				case "2":
 					if(dependencyGraphFrame != null)
 					{
 						dependencyGraphFrame.dispose();
 					}
 					
+					if(terrainProfileGraphFrame != null)
+					{
+						terrainProfileGraphFrame.dispose();
+					}
+					
+					frame.setVisible(false);
+					TerrainProfileGraph tpg = new TerrainProfileGraph();
+					terrainProfileGraphFrame = tpg.makeWindow();
+					terrainProfileGraphFrame.setVisible(true);
+					break;
+				case "3":
 					System.out.println("*****UKONÈUJI APLIKACI*****");
 					running = false;
 					break;
@@ -199,6 +222,7 @@ public class Game {
 				
 			} catch (Exception e) {
 				System.out.println("Pøi ètení vstupu z console nastala chyba!");
+				e.printStackTrace();
 			}
 			
 			System.out.println();

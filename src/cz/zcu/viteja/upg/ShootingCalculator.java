@@ -234,4 +234,17 @@ public class ShootingCalculator {
 		return this.hitSpot;
 	}
 
+	public double getAltitude(NamedPosition namedPosition, double elevation, double startV, double distance) {
+		double y = 0;				
+		double v = startV;		
+		double g = this.gz;		
+		double y0 = Game.terrain.getAltitudeInM(namedPosition.x, namedPosition.y);
+		double x = distance;		// distance
+		double theta = Math.toRadians(elevation);	
+		double xtanth = x*Math.tan(theta);			
+		double vcosth = v*Math.cos(theta);		
+		y = y0 + xtanth - ( (g*x*x) / (2*vcosth*vcosth) );
+		return y;
+	}
+
 }
